@@ -1,25 +1,43 @@
 "use client";
 
-import { Article } from "@/lib/types/articles";
-import { Category } from "@/lib/types/category";
+import { type Article } from "@/lib/types/articles";
+import { type Category } from "@/lib/types/category";
+import { User } from "@/lib/types/users";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { getCookie } from "cookies-next";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FormEvent, Key, useState } from "react";
-import { AlertDialogCancel } from "./ui/alert-dialog";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { AlertDialogCancel, AlertDialogFooter } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
+import { useToast } from "./ui/use-toast";
+
+const formSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Title is required." })
+    .max(50, { message: "Enter a title with only 50 characters" }),
+  content: z.string().min(1, { message: "Content is required." }),
+});
 
 export default function FormUpdateArticle({
   categories,
@@ -28,23 +46,35 @@ export default function FormUpdateArticle({
   categories: Category[];
   article: Article;
 }) {
-  const [category, setCategory] = useState<string>(article.categoryId);
-  const [title, setTitle] = useState<string>(article.title);
-  const [content, setContent] = useState<string>(article.content);
-  const [status, setStatus] = useState<string>(article.status);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [category, setCategory] = useState<string>(article.categoryId);
+  const [status, setStatus] = useState<string>(article.status);
+
+  const { toast } = useToast();
 
   const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: article.title,
+      content: article.content,
+    },
+  });
 
   const userCookies = getCookie("user");
   if (!userCookies) {
     window.location.href = "/login";
     return;
   }
+  const user: User = JSON.parse(userCookies);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
+
+    const closeButton: HTMLButtonElement | null =
+      document.querySelector("#close-button");
+    if (!closeButton) return;
 
     const response = await fetch(
       `${process.env.URL}/api/articles/${article._id}`,
@@ -52,9 +82,10 @@ export default function FormUpdateArticle({
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          userId: user._id,
           categoryId: category,
-          title: title,
-          content: content,
+          title: values.title,
+          content: values.content,
           status: status,
         }),
       }
@@ -64,91 +95,101 @@ export default function FormUpdateArticle({
 
     if (response.ok) {
       setIsLoading(false);
-      window.alert(data.message);
+      toast({
+        title: "Status",
+        description: `${data.message}`,
+      });
+      form.reset();
+      closeButton.click();
       router.refresh();
       return;
     } else {
       setIsLoading(false);
-      window.alert(data.message);
-      console.log("Error during update your article.");
+      toast({
+        title: "Status",
+        description: data.message,
+        variant: "destructive",
+      });
+      closeButton.click();
       router.refresh();
       return;
     }
   };
 
   return (
-    <form action="" className="my-5" method="post" onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-1 mb-3">
-        <Label htmlFor="category">Category</Label>
-        <Select
-          name="category"
-          onValueChange={(e) => setCategory(e)}
-          defaultValue={category}
-          required
-        >
-          <SelectTrigger className="w-[250px]">
-            <SelectValue placeholder="Select category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Category</SelectLabel>
-              {categories.map((category: Category, index: Key) => (
+    <Form {...form}>
+      <form action="" method="post" onSubmit={form.handleSubmit(handleSubmit)}>
+        <div className="space-y-2">
+          <Select
+            onValueChange={(e) => setCategory(e)}
+            defaultValue={article.categoryId}
+            required
+          >
+            <SelectTrigger className="w-[250px]">
+              <SelectValue placeholder="Select Category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category: Category, index: number) => (
                 <SelectItem key={index} value={category._id}>
                   {category.title}
                 </SelectItem>
               ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex flex-col gap-1 mb-3">
-        <Label htmlFor="title">Title</Label>
-        <Input
-          type="text"
-          name="title"
-          placeholder="Article title"
-          onChange={(e) => setTitle(e.target.value)}
-          defaultValue={title}
-          required
-        />
-      </div>
-      <div className="flex flex-col gap-1 mb-3">
-        <Label htmlFor="content">Content</Label>
-        <Textarea
-          name="content"
-          placeholder="Type your content here, using markdown."
-          defaultValue={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={20}
-          required
-        />
-      </div>
-      <div className="flex flex-col gap-1 mb-3">
-        <label htmlFor="status">Status</label>
-        <Select
-          onValueChange={(e) => setStatus(e)}
-          defaultValue={status}
-          required
-        >
-          <SelectTrigger className="w-[250px]">
-            <SelectValue placeholder="Select status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Status</SelectLabel>
-              <SelectItem value="DRAFTED">Drafted</SelectItem>
-              <SelectItem value="PUBLISHED">Published</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex items-center gap-2">
-        <Button type="submit" className="flex items-center gap-1">
-          {isLoading && <Loader2 size={20} className="animate-spin" />}
-          Save
-        </Button>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
-      </div>
-    </form>
+            </SelectContent>
+          </Select>
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter title" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Content</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Please enter your content with markdown."
+                    rows={20}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Select
+            onValueChange={(e) => setStatus(e)}
+            defaultValue={article.status}
+            required
+          >
+            <SelectTrigger className="w-[250px]">
+              <SelectValue placeholder="Select Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="DRAFTED" defaultChecked>
+                Draft
+              </SelectItem>
+              <SelectItem value="PUBLISHED">Publish</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <AlertDialogFooter className="mt-32 md:mt-5">
+          <AlertDialogCancel id="close-button">Cancel</AlertDialogCancel>
+          <Button type="submit" className="flex items-center gap-1">
+            {isLoading && <Loader2 size={20} className="animate-spin" />}
+            Edit
+          </Button>
+        </AlertDialogFooter>
+      </form>
+    </Form>
   );
 }
