@@ -168,7 +168,7 @@ export default function FormInsertArticle({
             </SelectContent>
           </Select>
         </div>
-        <AlertDialogFooter className="mt-5">
+        <AlertDialogFooter className="mt-32 md:mt-5">
           <AlertDialogCancel id="close-button">Cancel</AlertDialogCancel>
           <Button type="submit" className="flex items-center gap-1">
             {isLoading && <Loader2 size={20} className="animate-spin" />}
