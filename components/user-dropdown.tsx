@@ -53,6 +53,11 @@ export default function UserDropdown() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
+          <Link href="/dashboard/profile" onClick={() => setShow(false)}>
+            Profile
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
           <Link href="/dashboard/settings" onClick={() => setShow(false)}>
             Settings
           </Link>

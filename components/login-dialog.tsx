@@ -43,7 +43,10 @@ export default function LoginDialog() {
 
       if (response.ok) {
         setCookie("isLogined", true);
-        setCookie("user", data.data);
+        setCookie("user", {
+          _id: data.data._id,
+          username: data.data.username,
+        });
         window.location.href = "/";
       } else {
         setIsLoading(false);

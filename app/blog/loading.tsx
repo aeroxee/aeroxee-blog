@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Key } from "react";
 
-export default function Loading() {
+export default function LoadingBlog() {
   return (
     <Container className="pt-[90px] pb-[90px] px-4 md:px-[50px] lg:px-[90px] mx-auto">
       <div className="flex items-start flex-col lg:flex-row gap-4">

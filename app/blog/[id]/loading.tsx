@@ -1,7 +1,7 @@
 import Container from "@/components/container";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Loading() {
+export default function LoadingBlogDetail() {
   return (
     <Container className="pt-[90px] w-[96%] lg:w-[70%] mx-auto">
       <div className="flex flex-col">

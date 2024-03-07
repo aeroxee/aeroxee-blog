@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Key } from "react";
 
-export default async function Loading() {
+export default async function LoadingCategories() {
   return (
     <Container className="w-[96%] lg:w-[70%] mx-auto py-[90px]">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
