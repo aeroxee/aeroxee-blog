@@ -1,6 +1,12 @@
 import Container from "@/components/container";
 import FormRegister from "@/components/form-register";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Register | aeroxee",
+  description: "Register account aeroxee to free access make article.",
+};
 
 export default function Register() {
   return (
