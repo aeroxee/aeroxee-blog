@@ -3,19 +3,29 @@ import { type Article } from "./types/articles";
 async function getArticles(
   status: "PUBLISHED" | "DRAFTED",
   sort: "views" | "createdAt",
-  skip: number,
-  limit: number
-): Promise<Article[]> {
+  page: number,
+  limit: number,
+  q: string | null
+): Promise<any> {
   try {
-    const response = await fetch(
-      `${process.env.URL}/api/articles?status=${status}&sort=${sort}&skip=${skip}&limit=${limit}`,
-      {
+    if (q) {
+      const response = await fetch(`${process.env.URL}/api/articles?q=${q}`, {
         cache: "no-cache",
-      }
-    );
-    const data = await response.json();
+      });
+      const data = await response.json();
 
-    return data.data;
+      return data;
+    } else {
+      const response = await fetch(
+        `${process.env.URL}/api/articles?status=${status}&sort=${sort}&page=${page}&limit=${limit}}`,
+        {
+          cache: "no-cache",
+        }
+      );
+      const data = await response.json();
+
+      return data;
+    }
   } catch (error) {
     return [];
   }

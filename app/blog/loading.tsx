@@ -1,5 +1,6 @@
 import Container from "@/components/container";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Key } from "react";
 
@@ -9,6 +10,11 @@ export default function LoadingBlog() {
       <div className="flex items-start flex-col lg:flex-row gap-4">
         <div className="w-full lg:w-8/12 mb-5 lg:mb-0">
           <h2 className="text-xl font-extrabold text-sky-600">New Articles</h2>
+          <div className="my-5">
+            <form action="">
+              <Input type="search" name="q" placeholder="Search article..." />
+            </form>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-5">
             {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((_v: number, key: Key) => (
               <Card key={key} className="p-5">

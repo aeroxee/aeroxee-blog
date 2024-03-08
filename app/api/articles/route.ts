@@ -8,8 +8,9 @@ export async function GET(request: Request) {
   const userId = searchParams.get("userId");
   const status = searchParams.get("status");
   const sort = searchParams.get("sort");
-  const skip = parseInt(searchParams.get("skip") || "0");
+  const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "10");
+  const q = searchParams.get("q");
 
   if (categoryId) {
     const result = await ClientDB.db("aeroxee-blog")
@@ -17,8 +18,6 @@ export async function GET(request: Request) {
       .find({
         categoryId: ObjectId.createFromHexString(categoryId),
       })
-      .skip(skip)
-      .limit(limit)
       .toArray();
 
     return Response.json({ status: "success", message: "", data: result });
@@ -39,6 +38,14 @@ export async function GET(request: Request) {
   }
 
   if (status && sort) {
+    const filter = {
+      status: status,
+    };
+    const totalItems = await ClientDB.db("aeroxee-blog")
+      .collection("articles")
+      .countDocuments(filter);
+    const totalPages = Math.ceil(totalItems / limit);
+
     const result = await ClientDB.db("aeroxee-blog")
       .collection("articles")
       .find(
@@ -49,18 +56,30 @@ export async function GET(request: Request) {
           sort: sort === "views" ? { views: -1 } : { createdAt: -1 },
         }
       )
-      .skip(skip)
+      .skip((page - 1) * limit)
       .limit(limit)
       .toArray();
 
+    return Response.json({
+      status: "success",
+      message: "",
+      data: result,
+      totalPages: totalPages,
+      next: page === totalPages ? false : true,
+    });
+  }
+
+  if (q) {
+    const result = await ClientDB.db("aeroxee-blog")
+      .collection("articles")
+      .find({ $text: { $search: q }, status: "PUBLISHED" })
+      .toArray();
     return Response.json({ status: "success", message: "", data: result });
   }
 
   const result = await ClientDB.db("aeroxee-blog")
     .collection("articles")
     .find({})
-    .skip(skip)
-    .limit(limit)
     .toArray();
 
   return Response.json({ status: "success", message: "", data: result });
