@@ -73,8 +73,8 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
     formData.append("email", values.email);
 
     if (avatar) {
-      // TODO: Only 3MB size image.
-      const MAX_IMAGE_SIZE = 5;
+      // Only 3MB size image.
+      const MAX_IMAGE_SIZE = 1;
       if (avatar.size > MAX_IMAGE_SIZE * 1024 * 1024) {
         toast({
           title: "Status!",
