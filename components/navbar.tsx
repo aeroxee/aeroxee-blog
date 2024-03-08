@@ -45,6 +45,10 @@ export default function Navbar() {
       url: "/dashboard/overview",
     },
     {
+      name: "Profile",
+      url: "/dashboard/profile",
+    },
+    {
       name: "Settings",
       url: "/dashboard/settings",
     },

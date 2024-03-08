@@ -4,6 +4,8 @@ type User = {
   lastName: string;
   username: string;
   email: string;
+  avatar: string | null;
+  bio: string | null;
   password: string;
   isActive: boolean;
   updatedAt: string | null;
