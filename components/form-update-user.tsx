@@ -79,7 +79,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
         toast({
           title: "Status!",
           description:
-            "Image size is too large. A maximum of 5 MB is permitted.",
+            "Image size is too large. A maximum of 1MB is permitted.",
           variant: "destructive",
         });
         return;
