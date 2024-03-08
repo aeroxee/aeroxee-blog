@@ -175,7 +175,11 @@ export default function Navbar() {
                             key={key}
                             id="navbarLinks"
                             href={link.url}
-                            className="font-extralight text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300"
+                            className={`font-extralight text-sm ${
+                              pathname === link.url
+                                ? "text-gray-900 dark:text-gray-300"
+                                : "text-gray-500"
+                            } hover:text-gray-900 dark:hover:text-gray-300`}
                           >
                             {link.name}
                           </Link>
@@ -190,7 +194,11 @@ export default function Navbar() {
                             key={key}
                             id="navbarLinks"
                             href={link.url}
-                            className="font-extralight text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-300"
+                            className={`font-extralight text-sm ${
+                              pathname === link.url
+                                ? "text-gray-900 dark:text-gray-300"
+                                : "text-gray-500"
+                            } hover:text-gray-900 dark:hover:text-gray-300`}
                           >
                             {link.name}
                           </Link>
@@ -204,6 +212,8 @@ export default function Navbar() {
               <div className="flex items-center">
                 <ModeToggle />
                 {user && <UserDropdown />}
+                {/* User login dialog button  */}
+                {!user && <LoginDialog />}
                 <Button
                   type="button"
                   variant="ghost"
@@ -212,9 +222,6 @@ export default function Navbar() {
                 >
                   <Menu />
                 </Button>
-
-                {/* User login dialog button  */}
-                {!user && <LoginDialog />}
               </div>
             </div>
           </nav>
