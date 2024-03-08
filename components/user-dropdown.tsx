@@ -41,7 +41,7 @@ export default function UserDropdown() {
   return (
     <DropdownMenu open={show}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" onClick={() => setShow(true)} size="icon">
+        <Button variant="ghost" onClick={() => setShow(true)} size="icon">
           <User className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">User dropdown</span>
         </Button>
