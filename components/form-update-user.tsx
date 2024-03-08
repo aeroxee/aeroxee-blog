@@ -70,6 +70,18 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
     formData.append("email", values.email);
 
     if (avatar) {
+      // TODO: Only 3MB size image.
+      const MAX_IMAGE_SIZE = 5;
+      if (avatar.size > MAX_IMAGE_SIZE * 1024 * 1024) {
+        toast({
+          title: "Status!",
+          description:
+            "Image size is too large. A maximum of 5 MB is permitted.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const encode = await EncodeBase64Image(avatar);
       formData.append("avatar", encode);
     }
