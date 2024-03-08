@@ -31,7 +31,10 @@ const formSchema = z.object({
   lastName: z.string().min(1, { message: "Last name is required." }),
   username: z.string().min(1, { message: "Username is required." }),
   email: z.string().min(1, { message: "Email is required." }),
-  bio: z.string().min(1, { message: "Bio is required." }),
+  bio: z
+    .string()
+    .min(1, { message: "Bio is required." })
+    .max(255, { message: "Only 255 characters are allowed." }),
 });
 
 export default function FormUpdateUser({ user }: FormUpdateUserProps) {
