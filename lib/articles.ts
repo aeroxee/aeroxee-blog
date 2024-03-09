@@ -88,4 +88,36 @@ async function deleteArticle(id: string): Promise<boolean> {
   }
 }
 
-export { deleteArticle, getArticleById, getArticleByUserId, getArticles };
+async function getArticleByCategoryId(
+  categoryId: string,
+  status: "PUBLISHED" | "DRAFTED"
+) {
+  try {
+    const response = await fetch(
+      `${process.env.URL}/api/articles?categoryId=${categoryId}&status=${status}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-cache",
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return data;
+    } else {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+}
+
+export {
+  deleteArticle,
+  getArticleByCategoryId,
+  getArticleById,
+  getArticleByUserId,
+  getArticles,
+};

@@ -6,21 +6,55 @@ export async function GET(request: Request) {
 
   const categoryId = searchParams.get("categoryId");
   const userId = searchParams.get("userId");
-  const status = searchParams.get("status");
-  const sort = searchParams.get("sort");
+  const STATUS = searchParams.get("status");
+  const status = STATUS ? STATUS : "PUBLISHED";
+  const SORT = searchParams.get("sort");
+  const sort = SORT ? SORT : "createdAt";
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "10");
   const q = searchParams.get("q");
 
   if (categoryId) {
-    const result = await ClientDB.db("aeroxee-blog")
-      .collection("articles")
-      .find({
-        categoryId: ObjectId.createFromHexString(categoryId),
-      })
-      .toArray();
+    try {
+      const results = await ClientDB.db("aeroxee-blog")
+        .collection("articles")
+        .find(
+          {
+            categoryId: ObjectId.createFromHexString(categoryId),
+            status: status,
+          },
+          {
+            sort:
+              sort === "createdAt"
+                ? { createdAt: -1 }
+                : sort === "updatedAt"
+                ? { updatedAt: -1 }
+                : { createdAt: -1 },
+          }
+        )
+        .toArray();
+      const total = await ClientDB.db("aeroxee-blog")
+        .collection("articles")
+        .countDocuments({
+          categoryId: ObjectId.createFromHexString(categoryId),
+          status: status,
+        });
 
-    return Response.json({ status: "success", message: "", data: result });
+      return Response.json({
+        status: "success",
+        message: "",
+        data: results,
+        total: total,
+      });
+    } catch {
+      return Response.json(
+        {
+          status: "error",
+          message: "Server is error.",
+        },
+        { status: 500 }
+      );
+    }
   }
 
   if (userId) {
@@ -37,7 +71,7 @@ export async function GET(request: Request) {
     return Response.json({ status: "success", message: "", data: result });
   }
 
-  if (status && sort) {
+  if (sort) {
     const filter = {
       status: status,
     };
@@ -72,7 +106,7 @@ export async function GET(request: Request) {
   if (q) {
     const result = await ClientDB.db("aeroxee-blog")
       .collection("articles")
-      .find({ $text: { $search: q }, status: "PUBLISHED" })
+      .find({ $text: { $search: q }, status: status })
       .toArray();
     return Response.json({ status: "success", message: "", data: result });
   }

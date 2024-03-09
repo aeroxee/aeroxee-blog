@@ -21,7 +21,10 @@ export default async function Categories() {
           <Card key={key}>
             <CardHeader>
               <CardTitle>
-                <Link href="" className="text-sky-600">
+                <Link
+                  href={`/categories/${category._id}`}
+                  className="text-sky-600"
+                >
                   {category.title}
                 </Link>
               </CardTitle>
