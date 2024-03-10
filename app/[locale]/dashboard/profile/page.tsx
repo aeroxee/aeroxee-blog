@@ -7,7 +7,13 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
 export async function generateMetadata(
+  { params, searchParams }: Props,
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const t = await getTranslations("Profile");

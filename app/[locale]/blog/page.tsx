@@ -9,7 +9,13 @@ import { Metadata, ResolvingMetadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Key } from "react";
 
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
 export async function generateMetadata(
+  { params, searchParams }: Props,
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const t = await getTranslations("Blog");

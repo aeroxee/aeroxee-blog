@@ -5,7 +5,13 @@ import { Metadata, ResolvingMetadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
 export async function generateMetadata(
+  { params, searchParams }: Props,
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const t = await getTranslations("Contact");

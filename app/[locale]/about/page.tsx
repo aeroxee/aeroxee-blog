@@ -4,7 +4,13 @@ import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
 export async function generateMetadata(
+  { params, searchParams }: Props,
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const t = await getTranslations("About");
