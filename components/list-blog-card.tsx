@@ -6,6 +6,7 @@ import { type Article } from "@/lib/types/articles";
 import { getUserById } from "@/lib/users";
 import { Link } from "@/navigation";
 import { Book, CalendarDays, Clock, Eye, User } from "lucide-react";
+import { cookies } from "next/headers";
 import Showdown from "showdown";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -29,6 +30,10 @@ export default async function ListBlogCard({ article }: ListBlogCardProps) {
   const category = await getCategoryById(article.categoryId);
   const owner = await getUserById(article.userId);
   if (!owner) return;
+
+  const cookieStore = cookies();
+  const LOCALE = cookieStore.get("NEXT_LOCALE");
+  if (!LOCALE) return;
 
   return (
     <Card>
@@ -99,7 +104,7 @@ export default async function ListBlogCard({ article }: ListBlogCardProps) {
           </div>
           <div className="flex items-center gap-1 text-xs font-extralight">
             <Clock size="20" />
-            <span>{getMoment(article.createdAt)}</span>
+            <span>{getMoment(article.createdAt, LOCALE.value)}</span>
           </div>
         </div>
       </CardHeader>

@@ -6,6 +6,7 @@ import { Article } from "@/lib/types/articles";
 import { getUserById } from "@/lib/users";
 import { Link } from "@/navigation";
 import { Book, CalendarDays, Clock, Eye, User } from "lucide-react";
+import { cookies } from "next/headers";
 import Showdown from "showdown";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
@@ -30,6 +31,10 @@ export default async function PopularArticleList({ article }: Props) {
   if (!owner) return;
 
   const category = await getCategoryById(article.categoryId);
+
+  const cookieStore = cookies();
+  const LOCALE = cookieStore.get("NEXT_LOCALE");
+  if (!LOCALE) return;
 
   return (
     <div className="py-2 border-b border-b-gray-300 dark:border-b-gray-600">
@@ -94,7 +99,7 @@ export default async function PopularArticleList({ article }: Props) {
         </div>
         <div className="flex items-center gap-1 text-xs font-extralight">
           <Clock size="20" />
-          <span>{getMoment(article.createdAt)}</span>
+          <span>{getMoment(article.createdAt, LOCALE.value)}</span>
         </div>
       </div>
       {articleMarkdown(article.content)}

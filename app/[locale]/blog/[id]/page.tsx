@@ -16,6 +16,7 @@ import { Link } from "@/navigation";
 import { Book, CalendarDays, Clock, Eye, User } from "lucide-react";
 import { ObjectId } from "mongodb";
 import { Metadata, ResolvingMetadata } from "next";
+import { cookies } from "next/headers";
 import Showdown from "showdown";
 
 export async function generateMetadata(
@@ -67,6 +68,10 @@ export default async function BlogDetail({
         },
       }
     );
+
+  const cookieStore = cookies();
+  const LOCALE = cookieStore.get("NEXT_LOCALE");
+  if (!LOCALE) return;
 
   return (
     <>
@@ -134,7 +139,7 @@ export default async function BlogDetail({
           </div>
           <div className="flex items-center gap-1 text-xs font-extralight">
             <Clock size="20" />
-            <span>{getMoment(article.createdAt)}</span>
+            <span>{getMoment(article.createdAt, LOCALE.value)}</span>
           </div>
         </div>
         <div className="flex items-center justify-center w-full">
