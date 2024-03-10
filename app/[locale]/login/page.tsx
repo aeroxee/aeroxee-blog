@@ -1,9 +1,9 @@
 import Container from "@/components/container";
 import FormLogin from "@/components/form-login";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Login | aeroxee",
@@ -20,7 +20,7 @@ export default function Login() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center mb-5 cursor-pointer">
-              <Link href="/" legacyBehavior>
+              <Link href="/" passHref>
                 <div className="flex items-center gap-3">
                   <ArrowLeft size={20} />
                   Back to home

@@ -12,10 +12,10 @@ import { ClientDB } from "@/lib/db";
 import getMoment from "@/lib/get-moment";
 import parseTimeToMonthYear from "@/lib/parseTimeMonthYear";
 import { getUserById } from "@/lib/users";
+import { Link } from "@/navigation";
 import { Book, CalendarDays, Clock, Eye, User } from "lucide-react";
 import { ObjectId } from "mongodb";
 import { Metadata, ResolvingMetadata } from "next";
-import Link from "next/link";
 import Showdown from "showdown";
 
 export async function generateMetadata(
@@ -117,7 +117,9 @@ export default async function BlogDetail({
             <HoverCardTrigger asChild>
               <div className="flex items-center gap-1 text-xs font-extralight cursor-pointer">
                 <Book size="20" />
-                <span>{category?.title}</span>
+                <Link href={`/categories/${category?._id}`}>
+                  <span>{category?.title}</span>
+                </Link>
               </div>
             </HoverCardTrigger>
             <HoverCardContent className="w-80 space-y-1">

@@ -31,34 +31,47 @@ import {
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(1, { message: "Title is required." })
-    .max(50, { message: "Enter a title with only 50 characters" }),
-  content: z.string().min(1, { message: "Content is required." }),
-});
-
-export default function FormUpdateArticle({
-  categories,
-  article,
-}: {
+type FormUpdateProps = {
   categories: Category[];
   article: Article;
-}) {
+  select_category: string;
+  title: string;
+  title_placeholder: string;
+  content: string;
+  content_placeholder: string;
+  select_status: string;
+  published: string;
+  drafted: string;
+  // edit: string;
+  cancel: string;
+  alert_success_update: string;
+  alert_error_update: string;
+  required: string;
+  max_title: string;
+};
+
+export default function FormUpdateArticle(props: FormUpdateProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [category, setCategory] = useState<string>(article.categoryId);
-  const [status, setStatus] = useState<string>(article.status);
+  const [category, setCategory] = useState<string>(props.article.categoryId);
+  const [status, setStatus] = useState<string>(props.article.status);
 
   const { toast } = useToast();
 
   const router = useRouter();
 
+  const formSchema = z.object({
+    title: z
+      .string()
+      .min(1, { message: props.required })
+      .max(30, { message: props.max_title }),
+    content: z.string().min(1, { message: props.required }),
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: article.title,
-      content: article.content,
+      title: props.article.title,
+      content: props.article.content,
     },
   });
 
@@ -76,38 +89,48 @@ export default function FormUpdateArticle({
       document.querySelector("#close-button");
     if (!closeButton) return;
 
-    const response = await fetch(
-      `${process.env.URL}/api/articles/${article._id}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user._id,
-          categoryId: category,
-          title: values.title,
-          content: values.content,
-          status: status,
-        }),
+    try {
+      const response = await fetch(
+        `${process.env.URL}/api/articles/${props.article._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user._id,
+            categoryId: category,
+            title: values.title,
+            content: values.content,
+            status: status,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setIsLoading(false);
+        toast({
+          title: "Status",
+          description: props.alert_success_update,
+        });
+        form.reset();
+        closeButton.click();
+        router.refresh();
+        return;
+      } else {
+        setIsLoading(false);
+        toast({
+          title: "Status",
+          description: props.alert_error_update,
+          variant: "destructive",
+        });
+        closeButton.click();
+        router.refresh();
+        return;
       }
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
+    } catch {
       setIsLoading(false);
       toast({
         title: "Status",
-        description: `${data.message}`,
-      });
-      form.reset();
-      closeButton.click();
-      router.refresh();
-      return;
-    } else {
-      setIsLoading(false);
-      toast({
-        title: "Status",
-        description: data.message,
+        description: props.alert_error_update,
         variant: "destructive",
       });
       closeButton.click();
@@ -122,14 +145,14 @@ export default function FormUpdateArticle({
         <div className="space-y-2">
           <Select
             onValueChange={(e) => setCategory(e)}
-            defaultValue={article.categoryId}
+            defaultValue={props.article.categoryId}
             required
           >
             <SelectTrigger className="w-[250px]">
-              <SelectValue placeholder="Select Category" />
+              <SelectValue placeholder={props.select_category} />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((category: Category, index: number) => (
+              {props.categories.map((category: Category, index: number) => (
                 <SelectItem key={index} value={category._id}>
                   {category.title}
                 </SelectItem>
@@ -141,9 +164,9 @@ export default function FormUpdateArticle({
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel>{props.title}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter title" {...field} />
+                  <Input placeholder={props.title_placeholder} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -154,10 +177,10 @@ export default function FormUpdateArticle({
             name="content"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Content</FormLabel>
+                <FormLabel>{props.content}</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Please enter your content with markdown."
+                    placeholder={props.content_placeholder}
                     rows={20}
                     {...field}
                   />
@@ -168,22 +191,24 @@ export default function FormUpdateArticle({
           />
           <Select
             onValueChange={(e) => setStatus(e)}
-            defaultValue={article.status}
+            defaultValue={props.article.status}
             required
           >
             <SelectTrigger className="w-[250px]">
-              <SelectValue placeholder="Select Status" />
+              <SelectValue placeholder={props.select_status} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="DRAFTED" defaultChecked>
-                Draft
+                {props.drafted}
               </SelectItem>
-              <SelectItem value="PUBLISHED">Publish</SelectItem>
+              <SelectItem value="PUBLISHED">{props.published}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <AlertDialogFooter className="mt-32 md:mt-5">
-          <AlertDialogCancel id="close-button">Cancel</AlertDialogCancel>
+          <AlertDialogCancel id="close-button">
+            {props.cancel}
+          </AlertDialogCancel>
           <Button type="submit" className="flex items-center gap-1">
             {isLoading && <Loader2 size={20} className="animate-spin" />}
             Edit

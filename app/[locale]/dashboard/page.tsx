@@ -3,13 +3,26 @@ import { Card } from "@/components/ui/card";
 import { getArticleByUserId } from "@/lib/articles";
 import { type User } from "@/lib/types/users";
 import { Eye, Newspaper, ThumbsDown, ThumbsUp } from "lucide-react";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 
-export const metadata: Metadata = {
-  title: "Dashboard | aeroxee",
-  description: "",
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
+  const t = await getTranslations("Dashboard");
+
+  return {
+    title: `${t("title")} | aeroxee`,
+    description: t("description"),
+  };
+}
 
 export default async function Dashboard() {
   const cookieStore = cookies();

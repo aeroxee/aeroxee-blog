@@ -1,14 +1,41 @@
 import Base64Image from "@/components/base64-image";
 import Container from "@/components/container";
 import { getUserById } from "@/lib/users";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Profile | aeroxee",
-  description: "Your profile page",
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
+  const t = await getTranslations("Profile");
+
+  const cookieStore = cookies();
+  const userCookie = cookieStore.get("user");
+  if (!userCookie) {
+    notFound();
+  }
+
+  const userCookieJson = JSON.parse(userCookie.value);
+
+  const user = await getUserById(userCookieJson._id);
+  if (!user) {
+    notFound();
+  }
+
+  return {
+    title: `${t("title")} ${user.username} | aeroxee`,
+    description: `${t("description")} ${user.username}`,
+  };
+}
 
 export default async function Profile() {
   const cookieStore = cookies();

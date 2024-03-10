@@ -2,14 +2,27 @@ import Container from "@/components/container";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllCategories } from "@/lib/categories";
 import { Category } from "@/lib/types/category";
-import { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/navigation";
+import { Metadata, ResolvingMetadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Key } from "react";
 
-export const metadata: Metadata = {
-  title: "Categories | aeroxee",
-  description: "This page to show Categories of blog.",
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
+  const t = await getTranslations("Category");
+
+  return {
+    title: `${t("title")} | aeroxee`,
+    description: t("description"),
+  };
+}
 
 export default async function Categories() {
   const categories = await getAllCategories();

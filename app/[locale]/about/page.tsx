@@ -1,12 +1,25 @@
 import Container from "@/components/container";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "About | aeroxee",
-  description: "This page to show you what about me.",
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
+  const t = await getTranslations("About");
+
+  return {
+    title: `${t("title")} | aeroxee`,
+    description: t("description"),
+  };
+}
 
 export default function About() {
   return (

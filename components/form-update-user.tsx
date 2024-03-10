@@ -4,7 +4,6 @@ import EncodeBase64Image from "@/lib/encode-base64-image";
 import { User } from "@/lib/types/users";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Pencil } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -24,20 +23,22 @@ import { useToast } from "./ui/use-toast";
 
 interface FormUpdateUserProps {
   user: User;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  bio: string;
+  max_bio: string;
+  avatar: string;
+  image_size: string;
+  success: string;
+  error: string;
+  required: string;
+  save: string;
+  current_avatar: string;
 }
 
-const formSchema = z.object({
-  firstName: z.string().min(1, { message: "First name is required." }),
-  lastName: z.string().min(1, { message: "Last name is required." }),
-  username: z.string().min(1, { message: "Username is required." }),
-  email: z.string().min(1, { message: "Email is required." }),
-  bio: z
-    .string()
-    .min(1, { message: "Bio is required." })
-    .max(255, { message: "Only 255 characters are allowed." }),
-});
-
-export default function FormUpdateUser({ user }: FormUpdateUserProps) {
+export default function FormUpdateUser(props: FormUpdateUserProps) {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -51,14 +52,25 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
     }
   };
 
+  const formSchema = z.object({
+    firstName: z.string().min(1, { message: props.required }),
+    lastName: z.string().min(1, { message: props.required }),
+    username: z.string().min(1, { message: props.required }),
+    email: z.string().min(1, { message: props.required }),
+    bio: z
+      .string()
+      .min(1, { message: props.required })
+      .max(255, { message: props.max_bio }),
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      email: user.email,
-      bio: user.bio ? user.bio : "",
+      firstName: props.user.firstName,
+      lastName: props.user.lastName,
+      username: props.user.username,
+      email: props.user.email,
+      bio: props.user.bio ? props.user.bio : "",
     },
   });
 
@@ -78,8 +90,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
       if (avatar.size > MAX_IMAGE_SIZE * 1024 * 1024) {
         toast({
           title: "Status!",
-          description:
-            "Image size is too large. A maximum of 1MB is permitted.",
+          description: props.image_size,
           variant: "destructive",
         });
         return;
@@ -90,36 +101,46 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
     }
     formData.append("bio", values.bio);
 
-    const response = await fetch(
-      `${process.env.URL}/api/users?id=${user._id}`,
-      {
-        method: "PUT",
-        // headers: { "Content-Type": "application/json" },
-        body: formData,
+    try {
+      const response = await fetch(
+        `${process.env.URL}/api/users?id=${props.user._id}`,
+        {
+          method: "PUT",
+          // headers: { "Content-Type": "application/json" },
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        setIsLoading(false);
+        toast({
+          title: "Status!",
+          description: props.success,
+        });
+        router.refresh();
+        return;
+      } else {
+        setIsLoading(false);
+        toast({
+          title: "Status!",
+          description: props.error,
+          variant: "destructive",
+        });
+        router.refresh();
+        return;
       }
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
+    } catch {
       setIsLoading(false);
       toast({
         title: "Status!",
-        description: data.message,
-      });
-      router.refresh();
-      return;
-    } else {
-      setIsLoading(false);
-      toast({
-        title: "Status!",
-        description: data.message,
+        description: props.error,
         variant: "destructive",
       });
       router.refresh();
       return;
     }
   };
+
   return (
     <Form {...form}>
       <form
@@ -133,7 +154,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
           name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>First name</FormLabel>
+              <FormLabel>{props.firstName}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -146,7 +167,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
           name="lastName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Last name</FormLabel>
+              <FormLabel>{props.lastName}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -159,7 +180,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>{props.username}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -172,7 +193,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{props.email}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -185,7 +206,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
           name="bio"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel>{props.bio}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -194,7 +215,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
           )}
         />
         <FormItem>
-          <FormLabel>Avatar</FormLabel>
+          <FormLabel>{props.avatar}</FormLabel>
           <FormControl>
             <Input
               type="file"
@@ -203,13 +224,13 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
             />
           </FormControl>
           <FormDescription>
-            <Link
-              href={`data:image/png;base64,${user.avatar}`}
+            <a
+              href={`data:image/png;base64,${props.user.avatar}`}
               target="_blank"
               className="text-xs text-sky-600 font-light"
             >
-              Your current avatar
-            </Link>
+              {props.current_avatar}
+            </a>
           </FormDescription>
           <FormMessage />
         </FormItem>
@@ -220,7 +241,7 @@ export default function FormUpdateUser({ user }: FormUpdateUserProps) {
           ) : (
             <Pencil size={20} />
           )}
-          Save
+          {props.save}
         </Button>
       </form>
     </Form>
