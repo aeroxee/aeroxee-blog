@@ -14,6 +14,14 @@ export async function GET(request: Request) {
   const limit = parseInt(searchParams.get("limit") || "10");
   const q = searchParams.get("q");
 
+  if (q) {
+    const result = await ClientDB.db("aeroxee-blog")
+      .collection("articles")
+      .find({ $text: { $search: q }, status: status })
+      .toArray();
+    return Response.json({ status: "success", message: "", data: result });
+  }
+
   if (categoryId) {
     try {
       const results = await ClientDB.db("aeroxee-blog")
@@ -103,14 +111,6 @@ export async function GET(request: Request) {
     });
   }
 
-  if (q) {
-    const result = await ClientDB.db("aeroxee-blog")
-      .collection("articles")
-      .find({ $text: { $search: q }, status: status })
-      .toArray();
-    return Response.json({ status: "success", message: "", data: result });
-  }
-
   const result = await ClientDB.db("aeroxee-blog")
     .collection("articles")
     .find({})
@@ -143,6 +143,7 @@ export async function POST(request: Request) {
         message:
           "Successfully insert new article with id: " +
           resultInserted.insertedId,
+        id: resultInserted.insertedId,
       },
       { status: 201 }
     );

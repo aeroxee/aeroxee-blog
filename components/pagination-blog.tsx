@@ -14,6 +14,8 @@ interface Props {
   currentPage: number;
   totalPages: number;
   next: boolean;
+  nextMessage: string;
+  prevMessage: string;
 }
 
 export default function PaginationBlog({
@@ -29,6 +31,7 @@ export default function PaginationBlog({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
+            title="d"
             href={`${currentPage === 1 ? "#" : "/blog?page=" + prefUrl}`}
             aria-disabled={currentPage === 1}
           />

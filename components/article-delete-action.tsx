@@ -18,7 +18,18 @@ import {
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 
-export default function ArticleDeleteAction({ id }: { id: string }) {
+type ArticleDeleteActionProps = {
+  delete_title: string;
+  delete_description: string;
+  alert_success_delete: string;
+  alert_error_delete: string;
+  title: string;
+  delete: string;
+  cancel: string;
+  id: string;
+};
+
+export default function ArticleDeleteAction(props: ArticleDeleteActionProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -33,7 +44,7 @@ export default function ArticleDeleteAction({ id }: { id: string }) {
       setIsLoading(false);
       toast({
         title: "Status!",
-        description: "Successfully delete your article.",
+        description: props.alert_success_delete,
       });
       setOpen(false);
       router.refresh();
@@ -41,7 +52,7 @@ export default function ArticleDeleteAction({ id }: { id: string }) {
       setIsLoading(false);
       toast({
         title: "Status!",
-        description: "Failed delete your article.",
+        description: props.alert_error_delete,
         variant: "destructive",
       });
       setOpen(false);
@@ -58,30 +69,27 @@ export default function ArticleDeleteAction({ id }: { id: string }) {
           onClick={() => setOpen(true)}
         >
           <Eraser size={20} />
-          Delete
+          {props.title}
         </Button>
       </AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            Are you sure to delete this article?
-          </AlertDialogTitle>
+          <AlertDialogTitle>{props.delete_title}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            article and remove your data from our servers.
+            {props.delete_description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setOpen(false)}>
-            Cancel
+            {props.cancel}
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => handleDelete(id)}
+            onClick={() => handleDelete(props.id)}
             className="flex items-center gap-1"
           >
             {isLoading && <Loader2 size={20} className="animate-spin" />}
-            Delete
+            {props.delete}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

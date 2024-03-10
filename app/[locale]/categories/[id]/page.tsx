@@ -4,6 +4,7 @@ import { getArticleByCategoryId } from "@/lib/articles";
 import { getCategoryById } from "@/lib/categories";
 import { Article } from "@/lib/types/articles";
 import { Metadata, ResolvingMetadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -30,8 +31,9 @@ export default async function CategoryDetail({ params }: Props) {
 
   if (!category) {
     notFound();
-    return;
   }
+
+  const t = await getTranslations("Blog");
 
   const articles = await getArticleByCategoryId(category._id, "PUBLISHED");
 
@@ -46,7 +48,7 @@ export default async function CategoryDetail({ params }: Props) {
             {category.description}
           </p>
           <span className="text-xl text-sky-600 font-bold">
-            {articles.total} Article
+            {articles.total} {t("article")}
           </span>
         </div>
       </div>

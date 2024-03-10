@@ -30,19 +30,25 @@ import {
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(1, { message: "Title is required." })
-    .max(50, { message: "Enter a title with only 50 characters" }),
-  content: z.string().min(1, { message: "Content is required." }),
-});
-
-export default function FormInsertArticle({
-  categories,
-}: {
+type FormInsertArticleProps = {
   categories: Category[];
-}) {
+  select_category: string;
+  title: string;
+  title_placeholder: string;
+  content: string;
+  content_placeholder: string;
+  select_status: string;
+  published: string;
+  drafted: string;
+  save: string;
+  cancel: string;
+  alert_success: string;
+  alert_error: string;
+  required: string;
+  max_title: string;
+};
+
+export default function FormInsertArticle(props: FormInsertArticleProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("");
   const [status, setStatus] = useState<string>("");
@@ -51,11 +57,19 @@ export default function FormInsertArticle({
 
   const router = useRouter();
 
+  const formSchema = z.object({
+    title: z
+      .string()
+      .min(1, { message: props.required })
+      .max(30, { message: props.max_title }),
+    content: z.string().min(1, { message: props.required }),
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      content: "# Enter a content with markdown",
+      content: props.content_placeholder,
     },
   });
 
@@ -90,8 +104,8 @@ export default function FormInsertArticle({
     if (response.ok) {
       setIsLoading(false);
       toast({
-        title: "Status",
-        description: `${data.message}`,
+        title: "Success",
+        description: props.alert_success + data.data.id,
       });
       form.reset();
       closeButton.click();
@@ -100,8 +114,8 @@ export default function FormInsertArticle({
     } else {
       setIsLoading(false);
       toast({
-        title: "Status",
-        description: data.message,
+        title: "Error",
+        description: props.alert_error,
         variant: "destructive",
       });
       closeButton.click();
@@ -116,10 +130,10 @@ export default function FormInsertArticle({
         <div className="space-y-2">
           <Select onValueChange={(e) => setCategory(e)} required>
             <SelectTrigger className="w-[250px]">
-              <SelectValue placeholder="Select Category" />
+              <SelectValue placeholder={props.select_category} />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((category: Category, index: number) => (
+              {props.categories.map((category: Category, index: number) => (
                 <SelectItem key={index} value={category._id}>
                   {category.title}
                 </SelectItem>
@@ -131,9 +145,9 @@ export default function FormInsertArticle({
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel>{props.title}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter title" {...field} />
+                  <Input placeholder={props.title_placeholder} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -144,10 +158,10 @@ export default function FormInsertArticle({
             name="content"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Content</FormLabel>
+                <FormLabel>{props.content}</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Please enter your content with markdown."
+                    placeholder={props.content_placeholder}
                     rows={20}
                     {...field}
                   />
@@ -158,21 +172,23 @@ export default function FormInsertArticle({
           />
           <Select onValueChange={(e) => setStatus(e)} required>
             <SelectTrigger className="w-[250px]">
-              <SelectValue placeholder="Select Status" />
+              <SelectValue placeholder={props.select_status} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="DRAFTED" defaultChecked>
-                Draft
+                {props.drafted}
               </SelectItem>
-              <SelectItem value="PUBLISHED">Publish</SelectItem>
+              <SelectItem value="PUBLISHED">{props.published}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <AlertDialogFooter className="mt-32 md:mt-5">
-          <AlertDialogCancel id="close-button">Cancel</AlertDialogCancel>
+          <AlertDialogCancel id="close-button">
+            {props.cancel}
+          </AlertDialogCancel>
           <Button type="submit" className="flex items-center gap-1">
             {isLoading && <Loader2 size={20} className="animate-spin" />}
-            Save
+            {props.save}
           </Button>
         </AlertDialogFooter>
       </form>

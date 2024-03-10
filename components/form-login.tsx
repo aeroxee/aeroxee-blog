@@ -1,10 +1,10 @@
 "use client";
 
+import { Link } from "@/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastAction } from "@radix-ui/react-toast";
 import { setCookie } from "cookies-next";
 import { Loader2, LogIn } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

@@ -1,59 +1,33 @@
 "use client";
 
+import { Link, usePathname, useRouter } from "@/navigation";
 import { getCookie } from "cookies-next";
 import { ArrowLeft, Menu, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import ButtonToTop from "./button-to-top";
+import LocaleToggle from "./locale-toggle";
 import LoginDialog from "./login-dialog";
 import ModeToggle from "./mode-toggle";
 import { Button } from "./ui/button";
 import UserDropdown from "./user-dropdown";
 
-export default function Navbar() {
-  const links = [
-    {
-      name: "Home",
-      url: "/",
-    },
-    {
-      name: "About",
-      url: "/about",
-    },
-    {
-      name: "Blog",
-      url: "/blog",
-    },
-    {
-      name: "Category",
-      url: "/categories",
-    },
-    {
-      name: "Contact",
-      url: "/contact",
-    },
-  ];
+interface NavbarProps {
+  home: string;
+  about: string;
+  blog: string;
+  category: string;
+  contact: string;
+  dashboard: string;
+  overview: string;
+  profile: string;
+  settings: string;
+  locale: any;
+  light: string;
+  dark: string;
+  system: string;
+}
 
-  const dashboardLinks = [
-    {
-      name: "Dashboard",
-      url: "/dashboard",
-    },
-    {
-      name: "Overview",
-      url: "/dashboard/overview",
-    },
-    {
-      name: "Profile",
-      url: "/dashboard/profile",
-    },
-    {
-      name: "Settings",
-      url: "/dashboard/settings",
-    },
-  ];
-
+export default function Navbar(props: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -143,6 +117,7 @@ export default function Navbar() {
                   <Link
                     href={"/"}
                     className="text-lg lg:text-xl font-extrabold lg:me-3"
+                    locale={props.locale}
                   >
                     Aeroxee
                   </Link>
@@ -155,7 +130,11 @@ export default function Navbar() {
                   } transition-all ease-in-out w-[50%] md:w-auto bg-background md:bg-inherit min-h-screen md:min-h-0 border-r md:border-r-0 p-5 md:p-0`}
                 >
                   <div className="mb-6 flex items-center justify-between w-full md:hidden">
-                    <Link href={"/"} className="text-2xl font-extrabold">
+                    <Link
+                      href={"/"}
+                      className="text-2xl font-extrabold"
+                      locale={props.locale}
+                    >
                       aeroxee
                     </Link>
                     <Button
@@ -167,51 +146,123 @@ export default function Navbar() {
                     </Button>
                   </div>
                   {/* Links */}
-                  {pathname.startsWith("/dashboard") ? (
+                  {pathname.startsWith(`/dashboard`) ? (
                     <>
-                      {dashboardLinks.map(
-                        (link: { name: string; url: string }, key: number) => (
-                          <Link
-                            key={key}
-                            id="navbarLinks"
-                            href={link.url}
-                            className={`font-extralight text-sm ${
-                              pathname === link.url
-                                ? "text-gray-900 dark:text-gray-300"
-                                : "text-gray-500"
-                            } hover:text-gray-900 dark:hover:text-gray-300`}
-                          >
-                            {link.name}
-                          </Link>
-                        )
-                      )}
+                      <Link
+                        id="navbarLinks"
+                        href="/dashboard"
+                        className={`font-extralight text-sm ${
+                          pathname === "/dashboard"
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.dashboard}
+                      </Link>
+                      <Link
+                        id="navbarLinks"
+                        href="/dashboard/overview"
+                        className={`font-extralight text-sm ${
+                          pathname.startsWith("/dashboard/overview")
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.overview}
+                      </Link>
+                      <Link
+                        id="navbarLinks"
+                        href="/dashboard/profile"
+                        className={`font-extralight text-sm ${
+                          pathname.startsWith("/dashboard/profile")
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.profile}
+                      </Link>
+                      <Link
+                        id="navbarLinks"
+                        href="/dashboard/settings"
+                        className={`font-extralight text-sm ${
+                          pathname.startsWith("/dashboard/settings")
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.settings}
+                      </Link>
                     </>
                   ) : (
                     <>
-                      {links.map(
-                        (link: { name: string; url: string }, key: number) => (
-                          <Link
-                            key={key}
-                            id="navbarLinks"
-                            href={link.url}
-                            className={`font-extralight text-sm ${
-                              pathname === link.url
-                                ? "text-gray-900 dark:text-gray-300"
-                                : "text-gray-500"
-                            } hover:text-gray-900 dark:hover:text-gray-300`}
-                          >
-                            {link.name}
-                          </Link>
-                        )
-                      )}
+                      <Link
+                        id="navbarLinks"
+                        href="/"
+                        className={`font-extralight text-sm ${
+                          pathname === "/"
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.home}
+                      </Link>
+                      <Link
+                        id="navbarLinks"
+                        href="/about"
+                        className={`font-extralight text-sm ${
+                          pathname.startsWith("/about")
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.about}
+                      </Link>
+                      <Link
+                        id="navbarLinks"
+                        href="/blog"
+                        className={`font-extralight text-sm ${
+                          pathname.startsWith("/blog")
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.blog}
+                      </Link>
+                      <Link
+                        id="navbarLinks"
+                        href="/categories"
+                        className={`font-extralight text-sm ${
+                          pathname.startsWith("/categories")
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.category}
+                      </Link>
+                      <Link
+                        id="navbarLinks"
+                        href="/contact"
+                        className={`font-extralight text-sm ${
+                          pathname.startsWith("/contact")
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.contact}
+                      </Link>
                     </>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center">
-                <ModeToggle />
+                <ModeToggle
+                  light={props.light}
+                  dark={props.dark}
+                  system={props.system}
+                />
                 {user && <UserDropdown />}
+                <LocaleToggle />
                 {/* User login dialog button  */}
                 {!user && <LoginDialog />}
                 <Button

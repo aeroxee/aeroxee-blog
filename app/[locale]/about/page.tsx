@@ -1,12 +1,19 @@
 import Container from "@/components/container";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "About | aeroxee",
-  description: "This page to show you what about me.",
-};
+export async function generateMetadata(
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
+  const t = await getTranslations("About");
+
+  return {
+    title: `${t("title")} | aeroxee`,
+    description: t("description"),
+  };
+}
 
 export default function About() {
   return (

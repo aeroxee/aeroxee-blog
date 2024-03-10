@@ -4,8 +4,8 @@ import parseTimeToMonthYear from "@/lib/parseTimeMonthYear";
 import stripHtmlAndTruncate from "@/lib/truncate";
 import { Article } from "@/lib/types/articles";
 import { getUserById } from "@/lib/users";
+import { Link } from "@/navigation";
 import { Book, CalendarDays, Clock, Eye, User } from "lucide-react";
-import Link from "next/link";
 import Showdown from "showdown";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
@@ -79,7 +79,9 @@ export default async function PopularArticleList({ article }: Props) {
           <HoverCardTrigger asChild>
             <div className="flex items-center gap-1 text-xs font-extralight cursor-pointer">
               <Book size="20" />
-              <span>{category?.title}</span>
+              <Link href={`/categories/${category?._id}`}>
+                <span>{category?.title}</span>
+              </Link>
             </div>
           </HoverCardTrigger>
           <HoverCardContent className="w-80">

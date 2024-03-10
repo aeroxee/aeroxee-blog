@@ -20,7 +20,9 @@ async function getAllCategories(): Promise<Category[]> {
 
 async function getCategoryById(id: string): Promise<Category | null> {
   try {
-    const response = await fetch(`${process.env.URL}/api/categories?id=${id}`);
+    const response = await fetch(`${process.env.URL}/api/categories?id=${id}`, {
+      cache: "no-cache",
+    });
     const data = await response.json();
 
     if (response.ok) {
