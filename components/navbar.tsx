@@ -261,7 +261,7 @@ export default function Navbar(props: NavbarProps) {
                   dark={props.dark}
                   system={props.system}
                 />
-                {user && <UserDropdown />}
+                {user && <UserDropdown locale={props.locale} />}
                 <LocaleToggle />
                 {/* User login dialog button  */}
                 {!user && <LoginDialog />}

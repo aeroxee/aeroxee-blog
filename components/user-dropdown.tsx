@@ -11,19 +11,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link } from "@/navigation";
 import { deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-export default function UserDropdown() {
+export default function UserDropdown({ locale }: { locale: string }) {
   const [show, setShow] = useState<boolean>(false);
-
-  const router = useRouter();
 
   // handle logout user
   const handleLogout = () => {
     deleteCookie("isLogined");
     deleteCookie("user");
-    window.location.href = "/login";
+    window.location.href = "/" + locale + "/login";
   };
 
   const ref = useRef<any>(null);

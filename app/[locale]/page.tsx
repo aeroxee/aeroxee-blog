@@ -1,8 +1,8 @@
 import Container from "@/components/container";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { cookies } from "next/headers";
-import Link from "next/link";
 
 export default function Home() {
   const t = useTranslations("Index");
@@ -22,10 +22,12 @@ export default function Home() {
         <div className="flex items-center justify-center gap-4">
           {!userCookie && (
             <>
-              <Link href="/" legacyBehavior>
-                <Button variant="default">{t("get_started")}</Button>
+              <Link href="/" passHref>
+                <Button variant="default" disabled>
+                  {t("get_started")}
+                </Button>
               </Link>
-              <Link href="/login" legacyBehavior>
+              <Link href="/login" passHref>
                 <Button variant="outline">{t("login")}</Button>
               </Link>
             </>

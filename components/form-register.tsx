@@ -19,46 +19,46 @@ import { Input } from "./ui/input";
 import { ToastAction } from "./ui/toast";
 import { useToast } from "./ui/use-toast";
 
-const formSchema = z
-  .object({
-    firstName: z.string().min(1, {
-      message: "First name is required.",
-    }),
-    lastName: z.string().min(1, { message: "Last name is required" }),
-    username: z
-      .string()
-      .min(5, {
-        message: "Username must be at least 5 characters.",
-      })
-      .max(15, {
-        message: "Username must be a maximum of 15 characters.",
-      }),
-    email: z
-      .string()
-      .email({
-        message: "Please enter a valid email.",
-      })
-      .min(1, {
-        message: "Email is required.",
-      }),
-    password1: z.string().min(1, { message: "Password is required." }),
-    password2: z
-      .string()
-      .min(1, { message: "Password confirmation is required." }),
-  })
-  .required({
-    firstName: true,
-    lastName: true,
-    username: true,
-    email: true,
-    password1: true,
-    password2: true,
-  });
-
 export default function FormRegister() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { toast } = useToast();
+
+  const formSchema = z
+    .object({
+      firstName: z.string().min(1, {
+        message: "First name is required.",
+      }),
+      lastName: z.string().min(1, { message: "Last name is required" }),
+      username: z
+        .string()
+        .min(5, {
+          message: "Username must be at least 5 characters.",
+        })
+        .max(15, {
+          message: "Username must be a maximum of 15 characters.",
+        }),
+      email: z
+        .string()
+        .email({
+          message: "Please enter a valid email.",
+        })
+        .min(1, {
+          message: "Email is required.",
+        }),
+      password1: z.string().min(1, { message: "Password is required." }),
+      password2: z
+        .string()
+        .min(1, { message: "Password confirmation is required." }),
+    })
+    .required({
+      firstName: true,
+      lastName: true,
+      username: true,
+      email: true,
+      password1: true,
+      password2: true,
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

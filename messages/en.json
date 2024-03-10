@@ -105,5 +105,24 @@
     },
     "delete_title": "Are you sure to delete this article?",
     "delete_description": "This action cannot be undone. This will permanently delete your article and remove your data from our servers."
+  },
+  "Register": {
+    "title": "Register",
+    "description": "Register new account.",
+    "head": "Register Account",
+    "first_name": "First name",
+    "first_name_placeholder": "Enter your first name",
+    "last_name": "Last name",
+    "last_name_placeholder": "Enter your last name",
+    "username": "Username",
+    "username_placeholder": "Enter your username",
+    "email": "Email address",
+    "email_placeholder": "Enter your email address",
+    "password1": "Enter your password",
+    "password1_placeholder": "Enter your password",
+    "password2": "Enter confirmation password",
+    "password2_placeholder": "Enter confirmation password",
+    "required": "This field is required.",
+    "link": "Already have an account, login here."
   }
 }
