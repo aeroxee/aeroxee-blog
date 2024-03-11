@@ -3,6 +3,8 @@ import { Metadata, ResolvingMetadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
+import fs from "node:fs/promises";
+import { getPlaiceholder } from "plaiceholder";
 
 import ppImage from "@/public/pp.jpeg";
 
@@ -23,7 +25,10 @@ export async function generateMetadata(
   };
 }
 
-export default function About() {
+export default async function About() {
+  const buffer = await fs.readFile("./public/pp.jpeg");
+  const { base64 } = await getPlaiceholder(buffer);
+
   return (
     <Container className="relative w-full min-h-screen min-w-full">
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-[96%] md:w-[68%] lg:w-[60%] flex flex-col gap-2">
@@ -34,6 +39,8 @@ export default function About() {
             className="w-[200px] h-[200px]"
             width={1200}
             height={800}
+            placeholder="blur"
+            blurDataURL={base64}
           />
           <div className="space-y-2 text-center">
             <p>

@@ -4,6 +4,7 @@ import { getUserById } from "@/lib/users";
 import { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { getPlaiceholder } from "plaiceholder";
 
 export async function generateMetadata(
   { params }: { params: { id: string } },
@@ -30,6 +31,22 @@ export default async function Profile({ params }: { params: { id: string } }) {
     notFound();
   }
 
+  let blurDataURL;
+
+  if (user.avatar) {
+    const buffer = Buffer.from(user.avatar, "base64");
+    const { base64 } = await getPlaiceholder(buffer);
+    blurDataURL = base64;
+  } else {
+    const src = "https://github.com/shadcn.png";
+    const buffer = await fetch(src).then(async (res) =>
+      Buffer.from(await res.arrayBuffer())
+    );
+
+    const { base64 } = await getPlaiceholder(buffer);
+    blurDataURL = base64;
+  }
+
   return (
     <Container className="pt-[90px] pb-[90px] px-4 md:px-[50px] lg:px-[90px] mx-auto">
       <div className="my-10 flex flex-col items-center justify-center gap-4">
@@ -40,6 +57,7 @@ export default async function Profile({ params }: { params: { id: string } }) {
             width={1200}
             height={800}
             className="w-[200px] h-[200px] rounded-full"
+            blurDataURL={blurDataURL}
           />
         ) : (
           <Image
@@ -49,6 +67,8 @@ export default async function Profile({ params }: { params: { id: string } }) {
             height={800}
             className="w-[200px] h-[200px] rounded-full"
             loading="lazy"
+            placeholder="blur"
+            blurDataURL={blurDataURL}
           />
         )}
 
