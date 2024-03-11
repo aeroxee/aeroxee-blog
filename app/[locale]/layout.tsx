@@ -7,6 +7,9 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Inter as FontSans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
+import "yet-another-react-lightbox/plugins/captions.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
+import "yet-another-react-lightbox/styles.css";
 import "./globals.css";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
@@ -59,6 +62,7 @@ export default function RootLayout({
             dark={navbarTranslation("dark")}
             light={navbarTranslation("light")}
             system={navbarTranslation("system")}
+            gallery={navbarTranslation("gallery")}
           />
           {children}
           <Toaster />

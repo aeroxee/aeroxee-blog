@@ -25,6 +25,7 @@ interface NavbarProps {
   light: string;
   dark: string;
   system: string;
+  gallery: string;
 }
 
 export default function Navbar(props: NavbarProps) {
@@ -238,6 +239,17 @@ export default function Navbar(props: NavbarProps) {
                         } hover:text-gray-900 dark:hover:text-gray-300`}
                       >
                         {props.category}
+                      </Link>
+                      <Link
+                        id="navbarLinks"
+                        href="/gallery"
+                        className={`font-extralight text-sm ${
+                          pathname.startsWith("/gallery")
+                            ? "text-gray-900 dark:text-gray-300"
+                            : "text-gray-500"
+                        } hover:text-gray-900 dark:hover:text-gray-300`}
+                      >
+                        {props.gallery}
                       </Link>
                       <Link
                         id="navbarLinks"

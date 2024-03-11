@@ -21,7 +21,8 @@
     "settings": "Settings",
     "light": "Light",
     "dark": "Dark",
-    "system": "System"
+    "system": "System",
+    "gallery": "Gallery"
   },
   "Blog": {
     "title": "Blog",
