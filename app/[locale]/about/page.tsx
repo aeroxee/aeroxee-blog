@@ -4,6 +4,8 @@ import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 
+import ppImage from "@/public/pp.jpeg";
+
 type Props = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
@@ -27,7 +29,7 @@ export default function About() {
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-[96%] md:w-[68%] lg:w-[60%] flex flex-col gap-2">
         <div className="flex flex-col items-center justify-center gap-4">
           <Image
-            src="https://github.com/shadcn.png"
+            src={ppImage}
             alt="@aeroxee"
             className="w-[200px] h-[200px]"
             width={1200}
