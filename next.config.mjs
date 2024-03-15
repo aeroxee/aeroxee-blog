@@ -42,6 +42,6 @@ const nextConfig = {
   // },
 };
 
-const config = withNextIntl(nextConfig);
+const config = withPlaiceholder(nextConfig);
 
-export default withPlaiceholder(config);
+export default withNextIntl(config);
