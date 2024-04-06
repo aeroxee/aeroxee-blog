@@ -22,6 +22,11 @@ export async function generateMetadata(
       name: "aeroxee",
       url: "https://github.com/aeroxee",
     },
+    keywords: ["aeroxee", "blog", "Aeroxee", "Article", "Next.js", "Fajri"],
+    openGraph: {
+      title: "Aeroxee",
+      description: t("description"),
+    },
   };
 }
 
