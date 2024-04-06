@@ -1,0 +1,110 @@
+{
+  "Index": {
+    "title": "Beranda",
+    "description": "Aeroxee adalah situs web yang digunakan untuk membuat artikel gratis.",
+    "get_started": "Memulai",
+    "login": "Masuk"
+  },
+  "About": {
+    "title": "Tentang",
+    "description": "Halaman ini menampilkan tentang Aeroxee."
+  },
+  "Navbar": {
+    "home": "Beranda",
+    "about": "Tentang",
+    "blog": "Blog",
+    "category": "Kategori",
+    "contact": "Kontak",
+    "dashboard": "Dasbor",
+    "overview": "Ringkasan",
+    "profile": "Profil",
+    "settings": "Pengaturan",
+    "light": "Terang",
+    "dark": "Gelap",
+    "system": "Sistem",
+    "gallery": "Galeri"
+  },
+  "Blog": {
+    "title": "Blog",
+    "description": "Welcome to aeroxee blog.",
+    "new_article": "Artikel Terbaru",
+    "popular_article": "Artikel Terpopuler",
+    "article_empty": "Artikel kosong!",
+    "search": "Cari artikel",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "article": "Artikel"
+  },
+  "Category": {
+    "title": "Kategori",
+    "description": "Halaman ini untuk menampilkan Kategori blog."
+  },
+  "Contact": {
+    "title": "Kontak",
+    "head": "Kontak saya di:",
+    "description": ""
+  },
+  "Dashboard": {
+    "title": "Dasbor",
+    "description": ""
+  },
+  "Settings": {
+    "title": "Pengaturan",
+    "description": "Halaman untuk mengatur akun Anda.",
+    "first_name": "Nama depan",
+    "last_name": "Nama belakang",
+    "username": "Nama pengguna",
+    "bio": "Bio",
+    "avatar": "Avatar",
+    "email": "Alamat email",
+    "success": "Berhasil memperbaharui akun Anda.",
+    "error": "Error! Gagal memperbaharui akun Anda.",
+    "required":"Bidang ini dibutuhkan.",
+    "max_bio": "Maksimal 255 karakter yang diijinkan.",
+    "image_size": "Gambar terlalu besar. Maksimum 1MB yang diijinkan.",
+    "current_avatar": "Avatar saat ini",
+    "save": "Simpan"
+  },
+  "Profile": {
+    "title": "Profil",
+    "description": "Profil dari"
+  },
+  "Overview": {
+    "title": "Ringkasan",
+    "description": "Ringkasan data Anda.",
+    "head": "Ringkasan",
+    "article": "Artikel",
+    "view": "Lihat",
+    "update": "Update",
+    "delete": "Hapus",
+    "input": {
+      "title_insert": "Buat artikel baru?",
+      "description_insert": "Buat artikel baru?",
+      "title_update": "Update artikel?",
+      "description_update": "Update artikel?",
+      "select_category": "Pilih kategori",
+      "input_title": "Judul",
+      "input_title_placeholder": "Masukkan judul untuk artikel Anda",
+      "input_content": "Konten",
+      "input_content_placeholder": "# Gunakan markdown",
+      "select_status": "Pilih status",
+      "status_published": "PUBLIS",
+      "status_drafted": "DRAFT",
+      "save": "Simpan",
+      "edit": "Edit",
+      "cancel": "Batal",
+      "alert_success": "Berhasil membuat artikel baru dengan id: ",
+      "alert_error": "Gagal membuat artikel baru.",
+      "alert_success_update": "Berhasil update artikel.",
+      "alert_error_update": "Gagal update artikel.",
+      "alert_success_delete": "Berhasil menghapus artikel.",
+      "alert_error_delete": "Gagal menghapus artikel.",
+      "forms": {
+        "required": "Bidang ini dibutuhkan.",
+        "max_title": "Masukkan judul maximal 30 characters,"
+      }
+    },
+    "delete_title": "Apakah anda yakin untuk menghapus artikel ini?",
+    "delete_description": "Tindakan ini tidak bisa dibatalkan. Ini akan menghapus artikel Anda secara permanen dan menghapus data Anda dari server kami."
+  }
+}

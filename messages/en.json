@@ -1,0 +1,129 @@
+{
+  "Index": {
+    "title": "Home",
+    "description": "Aeroxee is a website to use for make a free article.",
+    "get_started": "Get Started",
+    "login": "Login"
+  },
+  "About": {
+    "title": "About",
+    "description": "This page to show about of Aeroxee."
+  },
+  "Navbar": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "category": "Category",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "profile": "Profile",
+    "settings": "Settings",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "gallery": "Gallery"
+  },
+  "Blog": {
+    "title": "Blog",
+    "description": "Welcome to aeroxee blog.",
+    "new_article": "New Article",
+    "popular_article": "Popular Article",
+    "article_empty": "Article is empty!",
+    "search": "Search article",
+    "prev": "Previous",
+    "next": "Next",
+    "article": "Article"
+  },
+  "Category": {
+    "title": "Category",
+    "description": "This page to show Categories of blog."
+  },
+  "Contact": {
+    "title": "Contact",
+    "head": "Contact me at:",
+    "description": ""
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "description": ""
+  },
+  "Settings": {
+    "title": "Settings",
+    "description": "Page to set up your account.",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "username": "Username",
+    "bio": "Bio",
+    "avatar": "Avatar",
+    "email": "Email address",
+    "success": "Successfully update your profile.",
+    "error": "Error! Failed update your profile.",
+    "required":"This field is required.",
+    "max_bio": "Only 255 characters are allowed.",
+    "image_size": "Image size is too large. A maximum of 1MB is permitted.",
+    "current_avatar": "Your current avatar",
+    "save": "Save"
+  },
+  "Profile": {
+    "title": "Profile",
+    "description": "Profile of"
+  },
+  "Overview": {
+    "title": "Overview",
+    "description": "Overview of your data.",
+    "head": "Overview",
+    "article": "Article",
+    "view": "View",
+    "update": "Update",
+    "delete": "Delete",
+    "input": {
+      "title_insert": "Create new article?",
+      "description_insert": "Create new article?",
+      "title_update": "Update your article?",
+      "description_update": "Update your article?",
+      "select_category": "Select category",
+      "input_title": "Title",
+      "input_title_placeholder": "Enter title of your article",
+      "input_content": "Content",
+      "input_content_placeholder": "# Enter a content with markdown",
+      "select_status": "Select status",
+      "status_published": "PUBLISHED",
+      "status_drafted": "DRAFT",
+      "save": "Save",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "alert_success": "Successfully create new article with id: ",
+      "alert_error": "Failed to create new article.",
+      "alert_success_update": "Successfully edit your article.",
+      "alert_error_update": "Failed edit your article.",
+      "alert_success_delete": "Successfully delete your article.",
+      "alert_error_delete": "Failed delete your article.",
+      "forms": {
+        "required": "This field is required.",
+        "max_title": "Enter a title with only 30 characters,"
+      }
+    },
+    "delete_title": "Are you sure to delete this article?",
+    "delete_description": "This action cannot be undone. This will permanently delete your article and remove your data from our servers."
+  },
+  "Register": {
+    "title": "Register",
+    "description": "Register new account.",
+    "head": "Register Account",
+    "first_name": "First name",
+    "first_name_placeholder": "Enter your first name",
+    "last_name": "Last name",
+    "last_name_placeholder": "Enter your last name",
+    "username": "Username",
+    "username_placeholder": "Enter your username",
+    "email": "Email address",
+    "email_placeholder": "Enter your email address",
+    "password1": "Enter your password",
+    "password1_placeholder": "Enter your password",
+    "password2": "Enter confirmation password",
+    "password2_placeholder": "Enter confirmation password",
+    "required": "This field is required.",
+    "link": "Already have an account, login here."
+  }
+}
