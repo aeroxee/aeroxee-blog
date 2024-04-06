@@ -27,6 +27,7 @@ export async function generateMetadata(
       title: "Aeroxee",
       description: t("description"),
     },
+    metadataBase: new URL("https://aeroxee.vercel.app"),
   };
 }
 

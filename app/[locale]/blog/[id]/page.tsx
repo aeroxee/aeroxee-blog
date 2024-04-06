@@ -11,6 +11,7 @@ import { getCategoryById } from "@/lib/categories";
 import { ClientDB } from "@/lib/db";
 import getMoment from "@/lib/get-moment";
 import parseTimeToMonthYear from "@/lib/parseTimeMonthYear";
+import stripHtmlAndTruncate from "@/lib/truncate";
 import { getUserById } from "@/lib/users";
 import { Link } from "@/navigation";
 import { Book, CalendarDays, Clock, Eye, User } from "lucide-react";
@@ -28,8 +29,13 @@ export async function generateMetadata(
   const article = await getArticleById(id);
 
   return {
-    title: `${article.title} | aeroxee`,
-    description: ``,
+    title: `${article.title} | Aeroxee`,
+    description: stripHtmlAndTruncate(article.content, 20),
+    openGraph: {
+      title: `${article.title} | Aeroxee`,
+      description: stripHtmlAndTruncate(article.content, 20),
+      type: "article",
+    },
   };
 }
 

@@ -7,10 +7,12 @@ import { notFound } from "next/navigation";
 
 export async function generateMetadata(
   { params }: { params: { id: string } },
-  _resolve: ResolvingMetadata
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const id = params.id;
   const user = await getUserById(id);
+
+  const previousImage = (await parent).openGraph?.images || [];
 
   if (!user) {
     notFound();
@@ -19,6 +21,11 @@ export async function generateMetadata(
   return {
     title: `${user.username} | aeroxee`,
     description: `Profile of ${user.username}`,
+    openGraph: {
+      title: `${user.username} | aeroxee`,
+      description: `Profile of ${user.username}`,
+      images: [`data:image/png;base64,${user.avatar}`, ...previousImage],
+    },
   };
 }
 

@@ -26,7 +26,7 @@
   },
   "Blog": {
     "title": "Blog",
-    "description": "Welcome to aeroxee blog.",
+    "description": "Aeroxee Blog merupakan halaman untuk menampilkan seluruh artikel-artikel terbaru.",
     "new_article": "Artikel Terbaru",
     "popular_article": "Artikel Terpopuler",
     "article_empty": "Artikel kosong!",

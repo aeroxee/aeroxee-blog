@@ -6,6 +6,10 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Register | aeroxee",
   description: "Register account aeroxee to free access make article.",
+  openGraph: {
+    title: "Register | aeroxee",
+    description: "Register account aeroxee to free access make article.",
+  },
 };
 
 export default function Register() {

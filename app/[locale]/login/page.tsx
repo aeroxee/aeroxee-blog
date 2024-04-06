@@ -8,6 +8,11 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Login | aeroxee",
   description: "Login account aeroxee to free access make article.",
+  openGraph: {
+    title: "Login | aeroxee",
+    description: "Login account aeroxee to free access make article.",
+    type: "website",
+  },
 };
 
 export default function Login() {

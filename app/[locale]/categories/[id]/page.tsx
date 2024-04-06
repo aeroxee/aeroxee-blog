@@ -22,6 +22,11 @@ export async function generateMetadata(
   return {
     title: `${category?.title} | aeroxee`,
     description: category?.description,
+    openGraph: {
+      title: `${category?.title} | aeroxee`,
+      description: category?.description,
+      type: "website",
+    },
   };
 }
 
