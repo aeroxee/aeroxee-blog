@@ -11,14 +11,14 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/dashboard/:path*",
+        source: "/:lang(en|id)/dashboard/:path*",
         missing: [
           {
             type: "cookie",
             key: "user",
           },
         ],
-        destination: "/en/login",
+        destination: "/:lang(en|id)/login",
         permanent: false,
       },
     ];
