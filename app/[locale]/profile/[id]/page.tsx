@@ -24,7 +24,8 @@ export async function generateMetadata(
     openGraph: {
       title: `${user.username} | aeroxee`,
       description: `Profile of ${user.username}`,
-      images: [`data:image/png;base64,${user.avatar}`, ...previousImage],
+      // images: [`data:image/png;base64,${user.avatar}`, ...previousImage],
+      images: `data:image/png;base64,${user.avatar}`,
     },
   };
 }

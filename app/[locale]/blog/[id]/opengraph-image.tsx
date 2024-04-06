@@ -26,6 +26,7 @@ export default async function Image({ params }: { params: { id: string } }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          padding: "15px",
         }}
       >
         {article.title}
