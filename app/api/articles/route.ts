@@ -1,7 +1,7 @@
 import { ClientDB } from "@/lib/db";
 import { ObjectId } from "mongodb";
 
-export const maxDuration = 20; // This function can run for a maximum of 5 seconds
+// export const maxDuration = 20; // This function can run for a maximum of 5 seconds
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
