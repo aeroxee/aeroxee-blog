@@ -6,6 +6,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Inter as FontSans } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
@@ -49,7 +50,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <NextTopLoader height={5} showSpinner={false} zIndex={10000} /> */}
+          <NextTopLoader height={5} showSpinner={false} zIndex={10000} />
           <Navbar
             home={navbarTranslation("home")}
             about={navbarTranslation("about")}
